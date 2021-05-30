@@ -1,0 +1,2 @@
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\Debug\TestProgram.exe
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\Debug\TestProgram.pdb
