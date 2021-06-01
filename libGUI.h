@@ -77,3 +77,7 @@ void loading(int isSuccess) {
 		printf("\n");
 	}
 }
+
+void showGUi(int num) {
+	
+}
