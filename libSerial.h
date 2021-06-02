@@ -107,8 +107,8 @@ SSIZE_T read_port(HANDLE port, uint8_t* buffer, size_t size)
     return received;
 }
 
-uint8_t* crc_ErrorCode(uint8_t* buffer, int length) {
-    int i, temp, returnValue[2];
+void crc_ErrorCode(uint8_t* buffer, int length, uint8_t* returnValue) {
+    int i, temp;
     uint16_t crcCode = 0xFFFF;
 
     for (i = 0; i < length; i++) {
@@ -118,6 +118,4 @@ uint8_t* crc_ErrorCode(uint8_t* buffer, int length) {
 
     returnValue[0] = crcCode % 256;
     returnValue[1] = crcCode / 256;
-
-    return returnValue;
 }

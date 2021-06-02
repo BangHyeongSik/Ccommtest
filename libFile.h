@@ -1,11 +1,41 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-char* findMap(char* name) {
+#define MAX_DB_LENGTH 1000
 
-	FILE* file = NULL;
-	char* content;
+struct directoryDB {
+	int num;
+	char element[100];
+	char isLast;
+};
 
+struct directoryDB dirDB[MAX_DB_LENGTH];
+int dirDB_len = 0;
 
+void getDirectory() {
+	
+	char buffer[1024];
+	char* context = NULL;
+	int num = 0;
 
+	FILE* file;
+	
+	fopen_s(&file, "Directory.csv", "r");
+
+	if (file) {
+		while (fgets(buffer, sizeof(buffer), file) != NULL) {
+			dirDB[num].num = atoi(strtok_s(buffer, ",", &context));
+			strcpy_s(dirDB[num].element, 100, strtok_s(NULL, ",", &context));
+			dirDB[num].isLast = strtok_s(NULL, "", &context)[0];
+
+			printf("%d %s %c\n", dirDB[num].num, dirDB[num].element, dirDB[num].isLast);
+			num++;
+		}
+		dirDB_len = num;
+
+		fclose(file);
+	}
+	
+	
 }

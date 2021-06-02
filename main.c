@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <windows.h>
 
-#include "libGUI.h"
 #include "libSerial.h"
 
 void gotoxy(int x, int y) {
@@ -11,22 +10,6 @@ void gotoxy(int x, int y) {
     //커서 이동
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
-
-void print_error(const char* context)
-{
-    DWORD error_code = GetLastError();
-    char buffer[256];
-    DWORD size = FormatMessageA(
-        FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_MAX_WIDTH_MASK,
-        NULL, error_code, MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
-        buffer, sizeof(buffer), NULL);
-    if (size == 0) { buffer[0] = 0; }
-    fprintf(stderr, "%s: %s\n", context, buffer);
-}
-
-// Opens the specified serial port, configures its timeouts, and sets its
-// baud rate.  Returns a handle on success, or INVALID_HANDLE_VALUE on failure.
-
 
 HANDLE serialConnect() {
     char comport[6] = { 0 }, parityBit[6] = { 0 }, stop_Bits[4] = { 0 };
@@ -40,7 +23,7 @@ HANDLE serialConnect() {
     scanf_s("%s", comport, 5);
     gotoxy(43, 2);
     scanf_s("%d", &baud);
-    gotoxy(45, 3);
+    gotoxy(44, 3);
     scanf_s("%s", parityBit, 5);
     gotoxy(45, 4);
     printf("Bits");
@@ -86,7 +69,7 @@ HANDLE serialConnect() {
 
 int main()
 {
-    HANDLE port = serialConnect();
+    /* HANDLE port = serialConnect();
     printf("\n");
 
     if (port == INVALID_HANDLE_VALUE) { return 1; }
@@ -105,9 +88,12 @@ int main()
     char newInt[2048];
     for (i = 0; i < result3; i++) {
         sprintf_s(newInt, 2048, "%02x", testbuffer[i]);
-        printf_s("%s", newInt);
+        printf_s("%s\n", newInt);
     }
     
-    CloseHandle(port);
+    CloseHandle(port); */
+
+    getDirectory();
+    showGUI(1);
     return 0;
 }

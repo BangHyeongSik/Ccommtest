@@ -1,3 +1,6 @@
-﻿  cserialport.c
-  gui.h
+﻿  main.c
+C:\Users\user\Desktop\Folder\School\2021_1st semester\Ccommtest\libGUI.h(1,1): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
+C:\Users\user\Desktop\Folder\School\2021_1st semester\Ccommtest\libSerial.h(123): warning C4172: returning address of local variable or temporary: returnValue
+  libGUI.h
+C:\Users\user\Desktop\Folder\School\2021_1st semester\Ccommtest\libGUI.h(1,1): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
   TestProgram.vcxproj -> C:\Users\user\Desktop\Folder\School\2021_1st semester\Ccommtest\Debug\TestProgram.exe
