@@ -1,0 +1,13 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 중간 디렉터리(Debug\)에 다른 프로젝트(TestProgram.vcxproj)에서 공유하는 파일이 포함되어 있습니다.  이로 인해 잘못된 정리 및 다시 빌드 동작이 수행될 수 있습니다.
+  main.c
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\libGUI.h(143,41): warning C4047: '=': 'string *'의 간접 참조 수준이 'char *'과(와) 다릅니다.
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\libGUI.h(189,41): warning C4047: '함수': 'char *'의 간접 참조 수준이 'string *'과(와) 다릅니다.
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\libGUI.h(189,33): warning C4024: 'getMapNumber': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\libSerial.h(120,39): warning C4244: '=': '__int64'에서 'uint8_t'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\main.c(77,48): warning C4244: '=': '__int64'에서 'uint8_t'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\main.c(135,61): warning C4047: '함수': 'int'의 간접 참조 수준이 'char *'과(와) 다릅니다.
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\main.c(135,43): warning C4024: 'sendData': 형식 및 실제 매개 변수 1의 형식이 서로 다릅니다.
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\libFile.h(79): warning C4715: 'getMapNumber': 모든 제어 경로에서 값을 반환하지는 않습니다.
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\libSerial.h(128): warning C4172: 지역 변수 또는 임시: returnValue의 주소를 반환하고 있습니다.
+C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\main.c(80): warning C4172: 지역 변수 또는 임시: part의 주소를 반환하고 있습니다.
+  Ccommtest_.vcxproj -> C:\Users\SIAME\Desktop\Folder\Practice\School\TestProgram\Debug\Ccommtest_.exe

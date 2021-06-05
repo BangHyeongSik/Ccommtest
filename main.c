@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <windows.h>
 
-#include "libGUI.h"
 #include "libSerial.h"
 
 void gotoxy(int x, int y) {
@@ -11,22 +10,6 @@ void gotoxy(int x, int y) {
     //커서 이동
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
-
-void print_error(const char* context)
-{
-    DWORD error_code = GetLastError();
-    char buffer[256];
-    DWORD size = FormatMessageA(
-        FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_MAX_WIDTH_MASK,
-        NULL, error_code, MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
-        buffer, sizeof(buffer), NULL);
-    if (size == 0) { buffer[0] = 0; }
-    fprintf(stderr, "%s: %s\n", context, buffer);
-}
-
-// Opens the specified serial port, configures its timeouts, and sets its
-// baud rate.  Returns a handle on success, or INVALID_HANDLE_VALUE on failure.
-
 
 HANDLE serialConnect() {
     char comport[6] = { 0 }, parityBit[6] = { 0 }, stop_Bits[4] = { 0 };
@@ -40,7 +23,7 @@ HANDLE serialConnect() {
     scanf_s("%s", comport, 5);
     gotoxy(43, 2);
     scanf_s("%d", &baud);
-    gotoxy(45, 3);
+    gotoxy(44, 3);
     scanf_s("%s", parityBit, 5);
     gotoxy(45, 4);
     printf("Bits");
@@ -84,8 +67,31 @@ HANDLE serialConnect() {
 
 }
 
+uint8_t* get8ByteDataArray(char* command) {
+    int i;
+    char charPart[3];
+    uint8_t part[8];
+
+    for (i = 0; i < 8; i++) {
+        strncpy_s(charPart, 3, command + (i * 2), 2);
+        part[i] = _strtoi64(charPart, NULL, 16);
+    }
+
+    return part;
+}
+
 int main()
 {
+    int currentDisplay = 1;
+    int nextDisplay;
+    int displayCount = 1;
+    int value = 0;
+    char* data;
+    uint8_t* sendValue = NULL;
+    uint8_t* receiveValue = NULL;
+    int i = 0;
+    int isComm = 0;
+
     HANDLE port = serialConnect();
     printf("\n");
 
@@ -93,8 +99,7 @@ int main()
     else {
         loading(1);
     }
-
-
+    /*
     uint8_t test[8] = { 0x01, 0x06, 0x00, 0x67, 0x00, 0x01, 0xF9, 0xD5 };
 
     int result2 = write_port(port, test, sizeof(test));
@@ -105,9 +110,50 @@ int main()
     char newInt[2048];
     for (i = 0; i < result3; i++) {
         sprintf_s(newInt, 2048, "%02x", testbuffer[i]);
-        printf_s("%s", newInt);
+        printf_s("%s\n", newInt);
     }
+    */
     
+
+    getDirectory();
+    getMap();
+
+    while (currentDisplay != 0) {
+        nextDisplay = showGUI(currentDisplay);
+        if (currentDisplay != 0 && nextDisplay >= 0) {
+            if (nextDisplay == 0) {
+                currentDisplay %= displayCount;
+                displayCount /= 10;
+            }
+            else {
+                displayCount *= 10;
+                currentDisplay += (nextDisplay * displayCount);
+            }
+        }
+        else {
+            //gotoxy(40, -nextDisplay);
+            scanf_s("%d", &value);
+            data = sendData(sendMapElement(-nextDisplay - 1), value);
+            sendValue = get8ByteDataArray(data);
+            printf("dfsdff:");
+            for (i = 0; i < 8; i++) {
+                printf("%02x/", sendValue[i]);
+            }
+
+            write_port(port, sendValue, 8);
+            read_port(port, receiveValue, 8);
+            isComm = 1;
+        }
+        system("cls");
+        if (receiveValue != NULL && isComm == 1) {
+            for (i = 0; i < 8; i++) {
+                printf("%02x/", sendValue[i]);
+            }
+            isComm = 0;
+        }
+        
+    }
+
     CloseHandle(port);
     return 0;
 }

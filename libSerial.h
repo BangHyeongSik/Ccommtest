@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <windows.h>
+#include <string.h>
 
 #include "libGUI.h"
 
@@ -24,6 +25,7 @@ const int CRC_Result[256] = { 0x0000, 0xc0c1, 0xc181, 0x0140, 0xc301, 0x03c0, 0x
 0x5b40, 0x9901, 0x59c0, 0x5880, 0x9841, 0x8801, 0x48c0, 0x4980, 0x8941, 0x4b00, 0x8bc1, 0x8a81, 0x4a40,
 0x4e00, 0x8ec1, 0x8f81, 0x4f40, 0x8d01, 0x4dc0, 0x4c80, 0x8c41, 0x4400, 0x84c1, 0x8581, 0x4540, 0x8701,
 0x47c0, 0x4680, 0x8641, 0x8201, 0x42c0, 0x4380, 0x8341, 0x4100, 0x81c1, 0x8081, 0x4040 };
+
 
 HANDLE open_serial_port(const char* device, uint32_t baud_rate, uint32_t parity, uint32_t data_length, uint32_t stop_bit)
 {
@@ -107,17 +109,36 @@ SSIZE_T read_port(HANDLE port, uint8_t* buffer, size_t size)
     return received;
 }
 
-uint8_t* crc_ErrorCode(uint8_t* buffer, int length) {
-    int i, temp, returnValue[2];
+char* add_crc_ErrorCode(char* buffer, int length) {
+    int i;
+    uint8_t temp, part;
+    char returnValue[1024], pt[3];
     uint16_t crcCode = 0xFFFF;
 
     for (i = 0; i < length; i++) {
-        temp = (crcCode ^= buffer[i]) / 256;
+        strncpy_s(pt, 3, buffer + (i * 2), 2);
+        part = _strtoi64(pt, NULL, 16);
+
+        temp = (crcCode ^= part) / 256;
         crcCode = CRC_Result[crcCode % 256] ^ temp;
     }
-
-    returnValue[0] = crcCode % 256;
-    returnValue[1] = crcCode / 256;
+    
+    sprintf_s(returnValue, 1024, "%s%02x%02x", buffer, crcCode % 256, crcCode / 256);
 
     return returnValue;
 }
+
+char* sendData(int address, int value) {
+    char buffer[1024];
+    char* returnValue;
+
+    address = address & 0xFFFF;
+    value = (value + 65536) & 0xFFFF;
+
+    sprintf_s(buffer, 1024, "0106%04x%04x", address, value);
+
+    returnValue = add_crc_ErrorCode(buffer, 6);
+
+    return returnValue;
+}   
+
